@@ -17,3 +17,12 @@ export const INPUT_MESSAGE = {
   ORDER:
     "주문하실 메뉴를 메뉴와 개수를 알려 주세요. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)\n",
 };
+
+export const ERROR_MESSAGE = {};
+export const DISCOUNT_MESSAGE = {
+  D_DAY: "크리스마스 디데이 할인",
+  WEEK: "평일 할인",
+  WEEKEND: "주말 할인",
+  SPECIAL: "특별 할인",
+  GIFT: "증정 이벤트",
+};

@@ -1,4 +1,5 @@
 import { MENU } from "../constant/menuConstant.js";
+import { DISCOUNT_MESSAGE } from "../constant/messageConstant.js";
 
 class EventDomain {
   parseOrderMenu(orderMenuString) {
@@ -25,7 +26,7 @@ class EventDomain {
 
     const christmasDiscount = this.calculateChristmasDDayDiscount(visitDate);
     totalDiscountAmount += christmasDiscount;
-    discountDetails["크리스마스 디데이 할인"] = -christmasDiscount;
+    discountDetails[DISCOUNT_MESSAGE.D_DAY] = -christmasDiscount;
 
     for (let item in orderMenu) {
       const price = this.getPrice(item);
@@ -34,17 +35,17 @@ class EventDomain {
       if (discountType.weekdayDiscount && this.isDessert(item)) {
         const weekdayDiscount = quantity * 2023; // 평일 할인액 2,023원 (디저트 메뉴)
         totalDiscountAmount += weekdayDiscount;
-        discountDetails["평일 할인"] = -weekdayDiscount;
+        discountDetails[DISCOUNT_MESSAGE.WEEK] = -weekdayDiscount;
       } else if (discountType.weekendDiscount && this.isMain(item)) {
         const weekendDiscount = quantity * 2023; // 주말 할인액 2,023원 (메인 메뉴)
         totalDiscountAmount += weekendDiscount;
-        discountDetails["주말 할인"] = -weekendDiscount;
+        discountDetails[DISCOUNT_MESSAGE.WEEKEND] = -weekendDiscount;
       }
     }
 
     if (discountType.specialDiscount) {
       totalDiscountAmount += 1000; // 특별 할인액 1,000원
-      discountDetails["특별 할인"] = -1000;
+      discountDetails[DISCOUNT_MESSAGE.SPECIAL] = -1000;
     }
 
     return { totalDiscountAmount, discountDetails };

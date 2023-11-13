@@ -9,3 +9,6 @@ export const MENU = {
   DESSERT: { 초코케이크: 15000, 아이스크림: 5000 },
   DRINK: { 제로콜라: 3000, 레드와인: 60000, 샴페인: 25000 },
 };
+export const GIFT = {
+  CHAMPAGNE: 25000,
+};

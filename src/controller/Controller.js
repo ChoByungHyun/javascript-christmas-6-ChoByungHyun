@@ -1,3 +1,5 @@
+import { GIFT } from "../constant/menuConstant.js";
+import { DISCOUNT_MESSAGE } from "../constant/messageConstant.js";
 import EventDomain from "../model/EventDomain.js";
 import createDateObject from "../model/createDateObject.js";
 import InputView from "../view/InputView.js";
@@ -50,8 +52,8 @@ class Controller {
   applyGiftDiscount(isGift, discountDetails, totalDiscountAmount) {
     OutputView.printGift(isGift);
     if (isGift) {
-      discountDetails["증정 이벤트"] = -25000;
-      totalDiscountAmount -= 25000;
+      discountDetails[DISCOUNT_MESSAGE.GIFT] = -GIFT.CHAMPAGNE;
+      totalDiscountAmount -= GIFT.CHAMPAGNE;
     }
     return totalDiscountAmount;
   }
