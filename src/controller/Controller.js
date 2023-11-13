@@ -15,19 +15,33 @@ class Controller {
   async run() {
     const eventCalendar = this.createDateObject.getDiscountDays();
     const visitDate = await this.getVisitDate();
-
     const orderMenu = await this.getMenu();
-
     const totalPrice = this.eventModel.calculateTotalPrice(orderMenu);
-    let { totalDiscountAmount, discountDetails } = this.getTotalDiscountDetail(
-      eventCalendar,
-      visitDate,
-      orderMenu
-    );
+
+    const { totalDiscountAmount, discountDetails } =
+      this.getTotalDiscountDetail(eventCalendar, visitDate, orderMenu);
+
     const isGift = this.eventModel.isGift(totalPrice);
     const finalPrice = totalPrice + totalDiscountAmount;
 
+    this.printOrderSummary(orderMenu, totalPrice, visitDate);
+    this.printDiscountSummary(
+      isGift,
+      discountDetails,
+      totalDiscountAmount,
+      finalPrice
+    );
+  }
+  printOrderSummary(orderMenu, totalPrice, visitDate) {
     this.printOrderInformation(orderMenu, totalPrice, visitDate);
+  }
+
+  printDiscountSummary(
+    isGift,
+    discountDetails,
+    totalDiscountAmount,
+    finalPrice
+  ) {
     totalDiscountAmount = this.applyGiftDiscount(
       isGift,
       discountDetails,
@@ -37,7 +51,6 @@ class Controller {
     const badge = this.eventModel.getBadge(totalDiscountAmount);
     this.printFinalPriceInformation(totalDiscountAmount, finalPrice, badge);
   }
-
   async getVisitDate() {
     OutputView.printWelcomeMessage();
     let visitDate;
