@@ -1,8 +1,10 @@
+import { DATE_CONFIG } from "../constant/dateConstant.js";
+
 class createDateObject {
+  // 일요일: 0, 월요일: 1, ..., 토요일: 6
   isSpecialDay(day, dayOfWeek) {
     return dayOfWeek === 0 || day === 25;
   }
-  // 일요일: 0, 월요일: 1, ..., 토요일: 6
 
   isWeekend(dayOfWeek) {
     return dayOfWeek === 5 || dayOfWeek === 6;
@@ -38,8 +40,12 @@ class createDateObject {
   }
   getDiscountDays() {
     let discountDays = {};
-    for (let day = 1; day <= 31; day++) {
-      let date = new Date(2023, 11, day);
+    for (let day = DATE_CONFIG.START_DAY; day <= DATE_CONFIG.END_DAY; day++) {
+      let date = new Date(
+        DATE_CONFIG.TARGET_YEAR,
+        DATE_CONFIG.TARGET_MONTH - 1,
+        day
+      );
       let dayOfWeek = date.getDay();
       discountDays[day] = this.getDiscountType(day, dayOfWeek);
     }
