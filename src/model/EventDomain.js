@@ -32,35 +32,60 @@ class EventDomain {
     let totalDiscountAmount = 0;
     let discountDetails = {};
     const totalPrice = this.calculateTotalPrice(orderMenu);
+
     if (totalPrice >= DISCOUNT_CONFIG.MIN_AMOUNT) {
-      const christmasDiscount = this.calculateChristmasDDayDiscount(visitDate);
-      totalDiscountAmount += christmasDiscount;
-      if (christmasDiscount !== 0) {
-        totalDiscountAmount += christmasDiscount;
-        discountDetails[DISCOUNT_MESSAGE.D_DAY] = -christmasDiscount;
-      }
+      totalDiscountAmount += this.calculateChristmasDiscount(
+        visitDate,
+        discountDetails
+      );
+      totalDiscountAmount += this.calculateMenuDiscount(
+        discountType,
+        orderMenu,
+        discountDetails
+      );
+      totalDiscountAmount += this.calculateSpecialDiscount(
+        discountType,
+        discountDetails
+      );
+    }
 
-      for (let item in orderMenu) {
-        const quantity = orderMenu[item];
+    return { totalDiscountAmount, discountDetails };
+  }
+  calculateChristmasDiscount(visitDate, discountDetails) {
+    const christmasDiscount = this.calculateChristmasDDayDiscount(visitDate);
+    if (christmasDiscount !== 0) {
+      discountDetails[DISCOUNT_MESSAGE.D_DAY] = -christmasDiscount;
+    }
+    return christmasDiscount;
+  }
 
-        if (discountType.weekdayDiscount && this.isDessert(item)) {
-          const weekdayDiscount = quantity * DISCOUNT_CONFIG.DAY_DISCOUNT; // 평일 할인액 2,023원 (디저트 메뉴)
-          totalDiscountAmount += weekdayDiscount;
-          discountDetails[DISCOUNT_MESSAGE.WEEK] = -weekdayDiscount;
-        } else if (discountType.weekendDiscount && this.isMain(item)) {
-          const weekendDiscount = quantity * DISCOUNT_CONFIG.DAY_DISCOUNT; // 주말 할인액 2,023원 (메인 메뉴)
-          totalDiscountAmount += weekendDiscount;
-          discountDetails[DISCOUNT_MESSAGE.WEEKEND] = -weekendDiscount;
-        }
-      }
+  calculateMenuDiscount(discountType, orderMenu, discountDetails) {
+    let menuDiscount = 0;
 
-      if (discountType.specialDiscount) {
-        totalDiscountAmount += DISCOUNT_CONFIG.SPECIAL_DISCOUNT; // 특별 할인액 1,000원
-        discountDetails[DISCOUNT_MESSAGE.SPECIAL] =
-          -DISCOUNT_CONFIG.SPECIAL_DISCOUNT;
+    for (let item in orderMenu) {
+      const quantity = orderMenu[item];
+
+      if (discountType.weekdayDiscount && this.isDessert(item)) {
+        const weekdayDiscount = quantity * DISCOUNT_CONFIG.DAY_DISCOUNT;
+        menuDiscount += weekdayDiscount;
+        discountDetails[DISCOUNT_MESSAGE.WEEK] = -weekdayDiscount;
+      } else if (discountType.weekendDiscount && this.isMain(item)) {
+        const weekendDiscount = quantity * DISCOUNT_CONFIG.DAY_DISCOUNT;
+        menuDiscount += weekendDiscount;
+        discountDetails[DISCOUNT_MESSAGE.WEEKEND] = -weekendDiscount;
       }
     }
-    return { totalDiscountAmount, discountDetails };
+
+    return menuDiscount;
+  }
+
+  calculateSpecialDiscount(discountType, discountDetails) {
+    if (discountType.specialDiscount) {
+      discountDetails[DISCOUNT_MESSAGE.SPECIAL] =
+        -DISCOUNT_CONFIG.SPECIAL_DISCOUNT;
+      return DISCOUNT_CONFIG.SPECIAL_DISCOUNT;
+    }
+    return 0;
   }
 
   isDessert(item) {
