@@ -21,25 +21,33 @@ class EventDomain {
   calculateDiscount(eventCalendar, visitDate, orderMenu) {
     const discountType = eventCalendar[visitDate];
     let totalDiscountAmount = 0;
+    let discountDetails = {};
 
-    totalDiscountAmount += this.calculateChristmasDDayDiscount(visitDate);
+    const christmasDiscount = this.calculateChristmasDDayDiscount(visitDate);
+    totalDiscountAmount += christmasDiscount;
+    discountDetails["크리스마스 디데이 할인"] = -christmasDiscount;
 
     for (let item in orderMenu) {
       const price = this.getPrice(item);
       const quantity = orderMenu[item];
 
       if (discountType.weekdayDiscount && this.isDessert(item)) {
-        totalDiscountAmount += quantity * 2023; // 평일 할인액 2,023원 (디저트 메뉴)
+        const weekdayDiscount = quantity * 2023; // 평일 할인액 2,023원 (디저트 메뉴)
+        totalDiscountAmount += weekdayDiscount;
+        discountDetails["평일 할인"] = -weekdayDiscount;
       } else if (discountType.weekendDiscount && this.isMain(item)) {
-        totalDiscountAmount += quantity * 2023; // 주말 할인액 2,023원 (메인 메뉴)
+        const weekendDiscount = quantity * 2023; // 주말 할인액 2,023원 (메인 메뉴)
+        totalDiscountAmount += weekendDiscount;
+        discountDetails["주말 할인"] = -weekendDiscount;
       }
     }
 
     if (discountType.specialDiscount) {
       totalDiscountAmount += 1000; // 특별 할인액 1,000원
+      discountDetails["특별 할인"] = -1000;
     }
 
-    return totalDiscountAmount;
+    return { totalDiscountAmount, discountDetails };
   }
 
   isDessert(item) {
@@ -69,6 +77,25 @@ class EventDomain {
     }
 
     return totalPrice;
+  }
+
+  isGift(totalPrice) {
+    if (totalPrice >= 120000) {
+      return true;
+    }
+    return false;
+  }
+  getBadge(totalDiscountAmount) {
+    totalDiscountAmount = totalDiscountAmount * -1;
+    if (totalDiscountAmount >= 20000) {
+      return "산타";
+    } else if (totalDiscountAmount >= 10000) {
+      return "트리";
+    } else if (totalDiscountAmount >= 5000) {
+      return "별";
+    } else {
+      return "";
+    }
   }
 }
 export default EventDomain;
