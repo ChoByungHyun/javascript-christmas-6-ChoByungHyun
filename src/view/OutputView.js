@@ -19,15 +19,30 @@ const OutputView = {
     );
   },
   printGift(gift) {
-    Console.print(`${OUTPUT_MESSAGE.GIFT}\n${gift}`);
+    Console.print(
+      `${OUTPUT_MESSAGE.GIFT_MENU}\n${
+        gift ? OUTPUT_MESSAGE.GIFT : OUTPUT_MESSAGE.NOTHING
+      }`
+    );
   },
 
-  printDiscountDetail(discountDetail) {
-    Console.print(`${OUTPUT_MESSAGE.DISCOUNT_DETAIL}\n${discountDetail}`);
+  printDiscountDetail(discountDetails) {
+    Console.print(OUTPUT_MESSAGE.DISCOUNT_DETAIL);
+    if (!discountDetails) {
+      Console.print(OUTPUT_MESSAGE.NOTHING);
+      return;
+    }
+    for (let discountType in discountDetails) {
+      Console.print(`${discountType}: ${discountDetails[discountType]}원`);
+    }
   },
 
   printTotalDiscountAmount(totalDiscountAmount) {
-    Console.print(`${OUTPUT_MESSAGE.TOTAL_DISCOUNT}\n${totalDiscountAmount}원`);
+    Console.print(
+      `${OUTPUT_MESSAGE.TOTAL_DISCOUNT}\n${
+        totalDiscountAmount ? totalDiscountAmount : OUTPUT_MESSAGE.NOTHING
+      }원`
+    );
   },
 
   printTotalPriceAfterDiscount(totalPriceAfterDiscount) {
@@ -37,7 +52,9 @@ const OutputView = {
   },
 
   printBadge(badge) {
-    Console.print(`${OUTPUT_MESSAGE.BADGE}\n${badge}`);
+    Console.print(
+      `${OUTPUT_MESSAGE.BADGE}\n${badge ? badge : OUTPUT_MESSAGE.NOTHING}`
+    );
   },
 };
 export default OutputView;
