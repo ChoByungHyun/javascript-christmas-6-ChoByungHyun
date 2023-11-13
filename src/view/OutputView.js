@@ -1,11 +1,12 @@
 import { Console } from "@woowacourse/mission-utils";
-import { OUTPUT_MESSAGE } from "../constant/messageConstant.js";
+import { ERROR_MESSAGE, OUTPUT_MESSAGE } from "../constant/messageConstant.js";
+import { formatCurrency } from "../util/formatCurrency.js";
 const OutputView = {
   printWelcomeMessage() {
     Console.print(OUTPUT_MESSAGE.WELCOME);
   },
-  printOrderMessage() {
-    Console.print(OUTPUT_MESSAGE.ORDER);
+  printOrderMessage(date) {
+    Console.print(`12월 ${date}${OUTPUT_MESSAGE.ORDER}`);
   },
   printMenu(menu) {
     Console.print(OUTPUT_MESSAGE.MENU);
@@ -15,7 +16,9 @@ const OutputView = {
   },
   printTotalPriceBeforeDiscount(totalPriceBeforeDiscount) {
     Console.print(
-      `${OUTPUT_MESSAGE.BEFORE_DISCOUNT}\n${totalPriceBeforeDiscount}원`
+      `${OUTPUT_MESSAGE.BEFORE_DISCOUNT}\n${formatCurrency(
+        totalPriceBeforeDiscount
+      )}원`
     );
   },
   printGift(gift) {
@@ -28,26 +31,30 @@ const OutputView = {
 
   printDiscountDetail(discountDetails) {
     Console.print(OUTPUT_MESSAGE.DISCOUNT_DETAIL);
-    if (!discountDetails) {
+    if (!discountDetails || Object.keys(discountDetails).length === 0) {
       Console.print(OUTPUT_MESSAGE.NOTHING);
       return;
     }
     for (let discountType in discountDetails) {
-      Console.print(`${discountType}: ${discountDetails[discountType]}원`);
+      Console.print(
+        `${discountType}: ${formatCurrency(discountDetails[discountType])}원`
+      );
     }
   },
 
   printTotalDiscountAmount(totalDiscountAmount) {
     Console.print(
       `${OUTPUT_MESSAGE.TOTAL_DISCOUNT}\n${
-        totalDiscountAmount ? totalDiscountAmount : OUTPUT_MESSAGE.NOTHING
+        totalDiscountAmount && formatCurrency(totalDiscountAmount)
       }원`
     );
   },
 
   printTotalPriceAfterDiscount(totalPriceAfterDiscount) {
     Console.print(
-      `${OUTPUT_MESSAGE.AFTER_DISCOUNT}\n${totalPriceAfterDiscount}원`
+      `${OUTPUT_MESSAGE.AFTER_DISCOUNT}\n${formatCurrency(
+        totalPriceAfterDiscount
+      )}원`
     );
   },
 
@@ -55,6 +62,15 @@ const OutputView = {
     Console.print(
       `${OUTPUT_MESSAGE.BADGE}\n${badge ? badge : OUTPUT_MESSAGE.NOTHING}`
     );
+  },
+  printError(error) {
+    Console.print(error);
+  },
+  printDateError() {
+    Console.print(ERROR_MESSAGE.DATE_TYPE);
+  },
+  printMenuError() {
+    Console.print(ERROR_MESSAGE.MENU_TYPE);
   },
 };
 export default OutputView;
