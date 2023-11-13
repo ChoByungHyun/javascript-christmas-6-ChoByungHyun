@@ -11,39 +11,22 @@ class createDateObject {
   }
 
   getDiscountType(day, dayOfWeek) {
-    if (dayOfWeek === 0) {
-      // 일요일
-      return {
-        weekdayDiscount: true,
-        weekendDiscount: false,
-        specialDiscount: true,
-      };
-    } else if (this.isSpecialDay(day, dayOfWeek)) {
-      return {
-        weekdayDiscount: false,
-        weekendDiscount: false,
-        specialDiscount: true,
-      };
-    } else if (this.isWeekend(dayOfWeek)) {
-      return {
-        weekdayDiscount: false,
-        weekendDiscount: true,
-        specialDiscount: false,
-      };
-    } else {
-      return {
-        weekdayDiscount: true,
-        weekendDiscount: false,
-        specialDiscount: false,
-      };
-    }
+    const isWeekend = this.isWeekend(dayOfWeek);
+    const isSpecialDay = this.isSpecialDay(day, dayOfWeek);
+
+    return {
+      weekdayDiscount: !isWeekend && !isSpecialDay,
+      weekendDiscount: isWeekend && !isSpecialDay,
+      specialDiscount: isSpecialDay || dayOfWeek === 0,
+    };
   }
+
   getDiscountDays() {
     let discountDays = {};
     for (let day = DATE_CONFIG.START_DAY; day <= DATE_CONFIG.END_DAY; day++) {
       let date = new Date(
         DATE_CONFIG.TARGET_YEAR,
-        DATE_CONFIG.TARGET_MONTH - 1,
+        DATE_CONFIG.TARGET_MONTH - 1, // 0부터 시작하는데 constant에서 +1한 값을 저장함.
         day
       );
       let dayOfWeek = date.getDay();
