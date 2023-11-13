@@ -1,6 +1,9 @@
 export const DATE_CONFIG = {
   START_DAY: 1,
   END_DAY: 31,
-  TARGET_MONTH: 11,
+  TARGET_MONTH: 12,
+  TARGET_YEAR: 2023,
   SPECIAL_DAY: 25,
+  D_DAY_START: 1,
+  D_DAY_END: 25,
 };

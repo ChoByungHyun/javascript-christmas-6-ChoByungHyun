@@ -1,6 +1,6 @@
 export const OUTPUT_MESSAGE = {
   WELCOME: "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.",
-  ORDER: "12월 26일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!",
+  ORDER: "일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!",
   MENU: "\n<주문 메뉴>",
   BEFORE_DISCOUNT: "\n<할인 전 총주문 금액>",
   GIFT_MENU: "\n<증정 메뉴>",
@@ -18,7 +18,14 @@ export const INPUT_MESSAGE = {
     "주문하실 메뉴를 메뉴와 개수를 알려 주세요. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)\n",
 };
 
-export const ERROR_MESSAGE = {};
+export const ERROR_MESSAGE = {
+  DATE_TYPE: "[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.",
+  MENU_TYPE: "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.",
+  MENU_COUNT:
+    "[ERROR] 1회 최대 주문 가능 개수는 20개입니다. 다시 입력해 주세요.",
+  MENU_DRINK:
+    "[ERROR] 메뉴는 음료수만으로 이루어질 수 없습니다. 다시 입력해 주세요.",
+};
 export const DISCOUNT_MESSAGE = {
   D_DAY: "크리스마스 디데이 할인",
   WEEK: "평일 할인",
