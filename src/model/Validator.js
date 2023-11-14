@@ -12,16 +12,23 @@ class Validator {
 
     return true;
   }
-
   isValidMenu(orderMenu) {
-    const availableMenuItems = Object.values(MENU).flatMap((category) =>
-      Object.keys(category)
-    );
+    this.checkIfMenuExists(orderMenu);
+    this.checkIfMenuItemsAreValid(orderMenu);
+    this.checkIfMenuCountIsValid(orderMenu);
+    return true;
+  }
 
+  checkIfMenuExists(orderMenu) {
     if (!orderMenu) {
       throw ERROR_MESSAGE.MENU_TYPE;
     }
+  }
 
+  checkIfMenuItemsAreValid(orderMenu) {
+    const availableMenuItems = Object.values(MENU).flatMap((category) =>
+      Object.keys(category)
+    );
     const menuItems = Object.keys(orderMenu);
     let drinkCount = 0;
     let totalCount = 0;
@@ -52,13 +59,17 @@ class Validator {
     if (drinkCount === totalCount) {
       throw ERROR_MESSAGE.MENU_DRINK;
     }
+  }
 
+  checkIfMenuCountIsValid(orderMenu) {
+    const totalCount = Object.values(orderMenu).reduce(
+      (acc, cur) => acc + cur,
+      0
+    );
     // 메뉴의 개수가 20개를 넘는 경우
     if (totalCount > MENU_CONFIG.MAX_MENU_COUNT) {
       throw ERROR_MESSAGE.MENU_COUNT;
     }
-
-    return true;
   }
 }
 
